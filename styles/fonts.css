@@ -1,0 +1,8 @@
+﻿@font-face {
+    font-family: 'GraphicPixel';
+    src: url('fonts/graphicpixel-webfont.eot');
+    src: url('fonts/graphicpixel-webfont.eot?#iefix') format('embedded-opentype'), 
+        url('fonts/graphicpixel-webfont.woff') format('woff'), 
+        url('fonts/graphicpixel-webfont.ttf') format('truetype'), 
+        url('fonts/graphicpixel-webfont.svg#GraphicPixelRegular') format('svg');
+}
