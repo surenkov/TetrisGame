@@ -7,7 +7,7 @@ function start() {
     init.parent.style.top = (Math.floor(window.innerHeight / 2) - 200) + "px";
     init.parent.style.left = (Math.floor(window.innerWidth / 2) - 200) + "px";
 
-    var tetris = new Tetris(init);
+    var tetris = new GameManager(init);
 
     var a = document.createElement("a");
     a.className = "tetris-action";
