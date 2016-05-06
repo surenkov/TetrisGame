@@ -1,5 +1,6 @@
 ﻿
-var Canvas = function(options, el) {
+var GameCanvas = function(options) {
+    var el = options.el || document.createElement("canvas");
     var defaultOptions = {
         fill: "transparent",
         stroke: { width: 6, color: "#695aa0" },
@@ -12,16 +13,20 @@ var Canvas = function(options, el) {
         }
     };
     Object.extend(defaultOptions, options);
+    Object.defineProperty(this, "el", {
+        get: function() { return el; }
+    });
 
-    this.el = el || document.createElement("canvas");
-    var ctx = this.el.getContext("2d");
+    var ctx = el.getContext("2d");
+    el.height = options.height;
+    el.width = options.width;
 
-    this.width = function() { return this.el.width; };
-    this.height = function() { return this.el.height; };
+    this.width = function() { return el.width; };
+    this.height = function() { return el.height; };
     this.getContext = function() { return ctx; };
 
     this.clear = function(rect) {
-        rect = rect || { x: 0, y: 0, w: width(), h: height() };
+        rect = rect || { x: 0, y: 0, w: this.width(), h: this.height() };
         ctx.clearRect(rect.x, rect.y, rect.w, rect.h);
     };
 

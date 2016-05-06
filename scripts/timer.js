@@ -1,22 +1,26 @@
 ﻿
-var RenderTimer = function(renderFunc, delay) {
+var GameTimer = function(renderFunc, delay) {
     var animHandler = 0;
     var elapsedTime = 0;
+    this.delay = delay;
 
-    var start = this.start;
     var renderWrapperCallback = function(timestamp) {
-        if (timestamp - elapsedTime >= delay) {
+        if (timestamp - elapsedTime >= this.delay) {
             renderFunc(timestamp);
             elapsedTime = timestamp;
         }
-        start();
-    }
+        animHandler = window.requestAnimationFrame(renderWrapperCallback);
+    }.bind(this);
 
     this.start = function() {
-        animHandler = window.requestAnimationFrame(renderWrapperCallback);
+        window.requestAnimationFrame(renderWrapperCallback);
+    };
+
+    this.immediate = function() {
+        window.requestAnimationFrame(renderFunc);
     };
 
     this.stop = function() {
         window.cancelAnimationFrame(animHandler);
     };
-}
+};

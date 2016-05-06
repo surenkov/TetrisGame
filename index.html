@@ -3,14 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>GameManager</title>
+    <title>Tetris Game</title>
     <link rel="stylesheet" href="styles/fonts.css">
     <link rel="stylesheet" href="styles/general.css">
 </head>
 <body>
     <div id="tetris-canvas"></div>
-
-    <script src="scripts/tetris.js" type="text/javascript"></script>
-    <script src="scripts/app.js" type="text/javascript"></script>
+<script type="text/javascript" src="dist/app.js"></script>
+<script type="text/javascript">
+    var t = new Tetris(document.getElementById("tetris-canvas"));
+</script>
 </body>
 </html>

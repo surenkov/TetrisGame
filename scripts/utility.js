@@ -1,6 +1,6 @@
 ﻿
 Array.random = function(array) {
-    return array[Math.floor(Math.random() * this.length)];
+    return array[Math.floor(Math.random() * array.length)];
 };
 
 Object.extend = function(destination, source) {
