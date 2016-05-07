@@ -107,7 +107,7 @@ var GameLogic = function (factory, dispatcher, options) {
         removeFilledLines();
     };
 
-    dispatcher.subscribe(KeyboardDispatcher.down, KEY.UP, pressOnPlay("up"));
-    dispatcher.subscribe(KeyboardDispatcher.down, KEY.LEFT, pressOnPlay("left"));
-    dispatcher.subscribe(KeyboardDispatcher.down, KEY.RIGHT, pressOnPlay("right"));
+    dispatcher.subscribe(KEY.UP, pressOnPlay("up"));
+    dispatcher.subscribe(KEY.LEFT, pressOnPlay("left"));
+    dispatcher.subscribe(KEY.RIGHT, pressOnPlay("right"));
 };

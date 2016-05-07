@@ -3,7 +3,7 @@ var STATES = { INIT: 0, PLAY: 1, PAUSE: 2, OVER: 3 };
 
 var GameManager = function(factory, options) {
     var settings = {
-        delay: 500,
+        delay: 200,
         size: 20,
         width: 10,
         height: 20
@@ -18,7 +18,7 @@ var GameManager = function(factory, options) {
         el: settings["el"]
     });
     var timer = new GameTimer(play, settings.delay);
-    var dispatcher = new KeyboardDispatcher(document);
+    var dispatcher = new KeyboardDispatcher();
 
     var logic = new GameLogic(factory, dispatcher, {
         size: settings.size,
@@ -32,9 +32,10 @@ var GameManager = function(factory, options) {
     var scene = new GameRenderer(logic, canvas, settings.size);
 
     this.init = function () {
-        dispatcher.subscribe(KeyboardDispatcher.press, KEY.PAUSE, this.toggle.bind(this));
-        dispatcher.subscribe(KeyboardDispatcher.press, KEY.SPACE, this.toggle.bind(this));
-        dispatcher.dispatch();
+        var toggle = this.toggle.bind(this);
+        dispatcher.subscribe(KEY.PAUSE, toggle);
+        dispatcher.subscribe(KEY.SPACE, toggle);
+        dispatcher.bind();
         return canvas.el;
     };
 
@@ -55,6 +56,7 @@ var GameManager = function(factory, options) {
     };
 
     function play(timestamp) {
+        dispatcher.dispatch();
         logic.play(timestamp, state);
         scene.render(timestamp, state);
     }

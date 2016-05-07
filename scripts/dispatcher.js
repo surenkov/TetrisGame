@@ -1,51 +1,51 @@
 ﻿
-var KeyboardDispatcher = function() {
+var KeyboardDispatcher = function(el) {
     var eventTable = {};
-    var generatedCallbacks = {};
+    var raisedEvents = {};
+    var boundElem = el || document;
 
-    this.subscribe = function(event, key, callback) {
-        eventTable[event] = eventTable[event] || {};
-        eventTable[event][key] = eventTable[event][key] || [];
-        eventTable[event][key].push(callback);
+    var boundDownCallback = function(e) {
+        raisedEvents[e.keyCode] = true;
+    };
+    var boundUpCallback = function(e) {
+        delete raisedEvents[e.keyCode];
     };
 
-    this.unsubscribe = function(event, key, callback) {
-        if (!event) eventTable = {};
-        else if (!key) delete eventTable[event];
-        else if (!callback) delete eventTable[event][key];
-        else {
-            var a = eventTable[event][key];
-            var idx = a.indexOf(callback);
-            if (idx !== -1) a.splice(idx, 1);
+    this.bind = function(el) {
+        boundElem = el || boundElem;
+        boundElem.addEventListener("keydown", boundDownCallback);
+        boundElem.addEventListener("keyup", boundUpCallback);
+    };
+
+    this.unbind = function() {
+        boundElem.removeEventListener("keydown", boundDownCallback);
+        boundElem.removeEventListener("keyup", boundUpCallback);
+    };
+
+    this.subscribe = function(key, callback) {
+        eventTable[key] = eventTable[key] || [];
+        if (eventTable[key].indexOf(callback) == -1)
+            eventTable[key].push(callback);
+    };
+
+    this.unsubscribe = function(key, callback) {
+        if (callback) {
+            var arr = eventTable[key] || [];
+            var idx = arr.indexOf(callback);
+            if (idx != -1)
+                arr.splice(idx, 1);
+        } else {
+            delete eventTable[key];
         }
     };
 
     this.dispatch = function() {
-        for (var c in generatedCallbacks)
-            if (generatedCallbacks.hasOwnProperty(c))
-                document.removeEventListener(c, generatedCallbacks[c]);
-        generatedCallbacks = {};
-
-        function generator(callbacks) {
-            return function(e) {
-                var callback = callbacks[e.keyCode];
-                if (callback)
-                    for (var i = 0; i < callback.length; i++)
-                        callback[i](e);
+        for (var keyCode in raisedEvents) {
+            if (raisedEvents[keyCode] && eventTable.hasOwnProperty(keyCode)) {
+                var arr = eventTable[keyCode];
+                for (var i = 0; i < arr.length; i++)
+                    arr[i](keyCode);
             }
         }
-
-        for (var evt in eventTable) {
-            if (!eventTable.hasOwnProperty(evt)) continue;
-            var cb = generator(eventTable[evt]);
-            document.addEventListener(evt, cb);
-            generatedCallbacks[evt] = cb;
-        }
     };
-
-    Object.defineProperties(KeyboardDispatcher, {
-        down: { get: function() { return "keydown"; } },
-        press: { get: function() { return "keypress"; } },
-        up: { get: function() { return "keyup"; } }
-    });
 };

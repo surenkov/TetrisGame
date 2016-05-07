@@ -2,7 +2,7 @@
 var GameTimer = function(renderFunc, delay) {
     var animHandler = 0;
     var elapsedTime = 0;
-    this.delay = delay;
+    this.delay = delay || 16;
 
     var renderWrapperCallback = function(timestamp) {
         if (timestamp - elapsedTime >= this.delay) {
