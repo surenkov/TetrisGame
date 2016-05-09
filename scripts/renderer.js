@@ -26,7 +26,7 @@ var GameRenderer = function (logic, canvas, size) {
         var m = logic.matrix();
         for (var i = 0; i < m.length; i++)
             for (var j = 0; j < m[i].length; j++)
-                if (m[i][j]) canvas.drawBlock({ x: j * size, y: i * size, w: size, h: size }, m[i][j]);
+                if (m[i][j]) canvas.drawBlock({ x: j * size, y: i * size, w: size, h: size }, m[i][j].style);
         renderFigure(logic.current());
     }
 
