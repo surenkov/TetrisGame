@@ -131,11 +131,22 @@ var GameLogic = function (factory, dispatcher, options) {
     Object.defineProperty(this, "score", {
         get: function() { return score; },
         set: function(value) {
-            score = value;
             var minTimeout = settings.minTimeout;
             var maxTimeout = settings.maxTimeout;
             var topScore = settings.topScore;
+
+            self.maxScore = score = value;
             self.timeout = minTimeout + Math.max((maxTimeout - minTimeout) * (topScore - score) / topScore, 0);
+        }
+    });
+
+    Object.defineProperty(this, "maxScore", {
+        get: function() {
+            var max = localStorage.getItem("max_score");
+            return max ? parseInt(max) : 0;
+        },
+        set: function(value) {
+            localStorage.setItem("max_score", Math.max(self.maxScore, value));
         }
     });
 

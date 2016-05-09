@@ -15,8 +15,8 @@ var GameManager = function(factory, options) {
     var state = STATES.INIT;
 
     var canvas = new GameCanvas({
-        width: settings.width * settings.size,
-        height: settings.height * settings.size,
+        width: settings.width * settings.size + 116,
+        height: settings.height * settings.size + 12,
         el: settings["el"]
     });
     var timer = new GameTimer(play);
@@ -32,7 +32,11 @@ var GameManager = function(factory, options) {
             render: function() { scene.render(performance.now(), state); }
         }
     });
-    var scene = new GameRenderer(logic, canvas, settings.size);
+    var scene = new GameRenderer(logic, canvas, {
+        size: settings.size,
+        width: settings.width,
+        height: settings.height
+    });
 
     this.init = function () {
         var toggle = this.toggle.bind(this);
@@ -50,11 +54,12 @@ var GameManager = function(factory, options) {
         state = STATES.PAUSE;
     };
 
+    var actions = {};
+    actions[STATES.INIT] = this.start;
+    actions[STATES.PLAY] = this.stop;
+    actions[STATES.PAUSE] = this.start;
+    actions[STATES.OVER] = gameOver;
     this.toggle = function() {
-        var actions = {};
-        actions[STATES.PLAY] = this.stop;
-        actions[STATES.PAUSE] = this.start;
-        actions[STATES.INIT] = this.start;
         actions[state]();
     };
 

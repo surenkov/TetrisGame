@@ -3,7 +3,7 @@ var GameCanvas = function(options) {
     var el = options.el || document.createElement("canvas");
     var defaultOptions = {
         fill: "transparent",
-        stroke: { width: 6, color: "#695aa0" },
+        stroke: { width: 2, color: "#695aa0" },
         text: {
             color: "#695aa0",
             align: "left",

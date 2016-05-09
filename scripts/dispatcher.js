@@ -5,7 +5,7 @@ var KeyboardDispatcher = function() {
 
     function boundCallback(evt) {
         cacheTable[evt] = cacheTable[evt] ||  function (e) {
-            var key = e.keyCode || window.event.keyCode;
+            var key = e.which;
             if (!(evt in eventTable && key in eventTable[evt]))
                 return true;
 
